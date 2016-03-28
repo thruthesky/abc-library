@@ -22,4 +22,16 @@ require "hook.php";
 dog('abc-library loaded --- ' . date('r'));
 
 
-if ( segment(0) == 'test' ) include 'test/test.php';
+/**
+ * ABC-Library Router
+ */
+if ( segment(0) == 'abc' ) {
+    $class = segment(1);
+    $method = segment(2);
+    $obj = new $class();
+    if ( method_exists( $obj, $method ) ) {
+        $obj->$method();
+        die();
+    }
+    die("$class::$method() does not exists.");
+}

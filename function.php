@@ -1,8 +1,19 @@
 <?php
-
 /**
+ * @file function.php
+ * @package abc-library
  *
  */
+/**
+ * @param $name
+ * @param null $default
+ * @return null
+ */
+function in( $name, $default = null ) {
+    if ( isset( $_POST[$name] ) ) return $_POST[$name];
+    else if ( isset( $_GET[$name] ) ) return $_GET[$name];
+    else return $default;
+}
 
 function di($o) {
     $re = print_r($o, true);
@@ -27,7 +38,8 @@ function segments($n = NULL) {
     $u = str_replace("https://", '', $u);
     $r = strtolower($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     $uri = str_replace( "$u/", '', $r);
-    $re = explode('/', $uri);
+    list ( $first, $second ) = explode('?', $uri);
+    $re = explode('/', $first);
     if ( $n !== NULL ) return $re[$n];
     else return $re;
 }
@@ -153,4 +165,65 @@ function dog( $message ) {
     }
     $message = "[$count_dog] $message";
     error_log( $message );
+}
+
+
+/**
+ *
+ * ABC Routing
+ *
+ * @code How to register routes.
+        abc_register_route( array(
+        'about-us',
+        'level-test',
+        'enrollment',
+        'curriculum',
+        'reservation',
+        ) );
+ * @endcode
+ *
+ * @code How to load script if route is accessed.
+    if ( abc_registered_route( $segment = segment(0) )) {
+        include get_template_directory() . "/page/$segment.php";
+    }
+ * @endcode
+ *
+ *
+ */
+$GLOBALS['abc_routes'] = array();
+/**
+ * @param array $array
+ */
+function abc_register_route( array $array ) {
+    global $abc_routes;
+    $abc_routes += $array;
+    add_filter('template_redirect', function () use ( $abc_routes ) {
+        global $wp_query;
+        if ( is_404() ) {
+            if ( in_array( segment(0), $abc_routes ) ) {
+                status_header( 200 );
+                $wp_query->is_404=false;
+            }
+        }
+    });
+}
+function abc_registered_route( $route ) {
+    global $abc_routes;
+    return in_array( $route, $abc_routes );
+}
+
+
+
+
+function json_error( $code, $message ) {
+    return array(
+        'code' => $code,
+        'message' => $message
+    );
+}
+function json_success( $data ) {
+    return array(
+        'code' => 0,
+        'data' => $data
+    );
 }

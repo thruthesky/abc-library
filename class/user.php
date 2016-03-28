@@ -11,7 +11,7 @@ include_once ABSPATH . '/wp-admin/includes/user.php';
 /**
  * Class WP_INCLUDE_USER
  */
-class WP_LIBRARY_USER extends WP_User {
+class user extends WP_User {
 
 
     static $properties = [
@@ -162,6 +162,59 @@ class WP_LIBRARY_USER extends WP_User {
     }
 
 
+    /**
+     *
+     * @todo UNIT-TEST
+     */
+    public function count() {
+        wp_send_json( count_users() );
+    }
+
+
+    /**
+     * Register a user with $_GET, $POST input.
+     *
+     * @todo UNIT-TEST
+     */
+    public function registerSubmit() {
+
+        if ( ! in('user_login') ) wp_send_json(json_error(-5, 'Input username') );
+        if ( ! in('user_pass') ) wp_send_json(json_error(-6, 'Input password') );
+        if ( ! in('user_email') ) wp_send_json(json_error(-7, 'Input email') );
+        if ( ! in('name') ) wp_send_json(json_error(-8, 'Input name') );
+        if ( ! in('mobile') ) wp_send_json(json_error(-9, 'Input mobile number') );
+
+        if ( user( in('user_login') )->exists() ) wp_send_json(json_error(-10, 'Username already exists.'));
+        if ( user( in('user_email') )->exists() ) wp_send_json(json_error(-20, 'email already exists.'));
+
+        $id = user()->create(
+            array(
+                'user_login' => in('user_login'),
+                'user_pass' => in('user_pass'),
+                'user_email' => in('user_email'),
+                'name' => in('name'),
+                'mobile' => in('mobile'),
+                'landline' => in('landline'),
+                'address' => in('address'),
+                'skype' => in('skype'),
+                'kakao' => in('kakao'),
+            )
+        );
+
+        if ( is_wp_error( $id ) ) wp_send_json( json_error( -10140, 'failed on registratoin' ) ); // $id ;
+        else { // Registration is OK
+            if ( in('login') == '1' ) { // Set user logged-in
+                $creds = array(
+                    'user_login'    => in('user_login'),
+                    'user_password' => in('user_pass'),
+                    'rememember'    => true
+                );
+            }
+            wp_send_json( json_success( $id ) );
+        }
+    }
+
+
 }
 
 /**
@@ -169,12 +222,12 @@ class WP_LIBRARY_USER extends WP_User {
  * @see test file for example.
  *
  * @param null $uid
- * @return WP_LIBRARY_USER
+ * @return user
  *
  *
  */
 function user( $uid = null ) {
-    $user = new WP_LIBRARY_USER($uid);
+    $user = new user($uid);
     return $user;
 }
 
