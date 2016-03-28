@@ -20,3 +20,6 @@ require "shortcode.php";
 require "hook.php";
 
 dog('abc-library loaded --- ' . date('r'));
+
+
+if ( segment(0) == 'test' ) include 'test/test.php';
