@@ -12,8 +12,7 @@
  * wp-include/library.php
  */
 
-if ( defined('__WP_INCLUDE__') ) return;
-define('__WP_INCLUDE__', TRUE);
+define('WP_LIBRARY', TRUE);
 
 require "function.php";
 require "class/user.php";
