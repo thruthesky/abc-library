@@ -11,6 +11,15 @@ function di($o) {
     echo implode("<br>", $re);
 }
 
+function test( $re, $message = null ) {
+    static $count_test = 0;
+    $count_test ++;
+    if ( $re ) echo "$count_test ";
+    else {
+        echo "\nERROR : $message\n";
+        die();
+    }
+}
 
 function segments($n = NULL) {
     $u = strtolower(site_url());
@@ -28,11 +37,25 @@ function segment($n) {
 
 
 /**
- * Removes admin bar for users only.
+ *
+ * Removes admin toolbar on top of the website ( not in admin page )
+ *
+ *
+ * @param bool $admin
+ *      - if it's true, it removes admin bar for admin also.
+ *      - if it's false, it only removes admin bar for users. not for admin.
+ *
+ * @code
+        add_action('after_setup_theme', function (){
+            remove_admin_bar(true);
+        });
+ * @endcode
  */
-
-function remove_admin_bar() {
-    if (!current_user_can('administrator') && !is_admin()) {
+function remove_admin_bar( $admin = false ) {
+    if ( $admin ) {
+        show_admin_bar(false);
+    }
+    else if ( ! current_user_can('administrator') && ! is_admin() ) {
         show_admin_bar(false);
     }
 }
@@ -49,6 +72,49 @@ function option($storage, $name, $escape = true) {
     else $re = $options[$name];
     echo $re;
 }
+
+/**
+ *
+ * Returns option value
+ *
+ * @param $name             - is option name. It can be an element of array. like "abc[def]"
+ * @param null $default     - is the default value which will be returned if the value of the option name is empty.
+ * @return mixed|null|void
+ *
+ * @code
+ *  echo opt('abc', 'def');
+ *  echo opt('lms[logo]', 'img/logo.jpg');
+ * @endcode
+ */
+function get_opt($name, $default=null) {
+    $value = null;
+    if ( strpos( $name, '[' ) ) {
+        list( $name, $rest ) = explode( '[', $name );
+        $element = trim($rest, ']');
+        $arr = get_option( $name );
+        if ( isset( $arr[$element] ) ) $value = $arr[$element];
+    }
+    else {
+        $value = get_option( $name );
+    }
+    if ( empty($value) ) return $default;
+    else return $value;
+}
+
+/**
+ * Echoes the return value of 'get_opt'
+ * @param $name
+ * @param null $default
+ * @code
+ * <?php opt('lms[logo]', 'img/logo.jpg')?>
+ * @endcode
+ */
+function opt($name, $default=null) {
+    echo get_opt($name, $default);
+}
+
+
+
 
 /**
  * @return string - theme directory uri

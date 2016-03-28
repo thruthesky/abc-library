@@ -12,8 +12,7 @@
  * wp-include/library.php
  */
 
-if ( defined('__WP_INCLUDE__') ) return;
-define('__WP_INCLUDE__', TRUE);
+define('WP_LIBRARY', TRUE);
 
 require "function.php";
 require "class/user.php";
@@ -21,6 +20,13 @@ require "shortcode.php";
 require "hook.php";
 
 dog('wp-library loaded --- ' . date('r'));
+
+
+if ( segment(0) == 'wp-library' ) require 'test/test.php';
+
+
+
+
 
 /**
  * Make this plugin run first.
