@@ -200,30 +200,50 @@ function abc_register_route( array $array ) {
     add_filter('template_redirect', function () use ( $abc_routes ) {
         global $wp_query;
         if ( is_404() ) {
-            if ( in_array( segment(0), $abc_routes ) ) {
+            if ( abc_registered_route(segment(0)) ) {
                 status_header( 200 );
                 $wp_query->is_404=false;
             }
         }
     });
 }
+
 function abc_registered_route( $route ) {
     global $abc_routes;
     return in_array( $route, $abc_routes );
 }
 
-
-
-
+/**
+ *
+ * @param $code
+ * @param string|WP_Error $message - it may be a string or WP_Error.
+ *  If WP_Error is passed, then it gets the key and message of the error.
+ * @return array
+ */
 function json_error( $code, $message ) {
+    if ( is_wp_error( $message ) ) {
+        list ( $k, $v ) = each ($message->errors);
+        $message = "$k : $v[0]";
+    }
     return array(
         'code' => $code,
         'message' => $message
     );
 }
-function json_success( $data ) {
+
+function json_success( $data = array() ) {
     return array(
         'code' => 0,
         'data' => $data
     );
+}
+
+
+function loadRoute( $class, $method ) {
+    $obj = new $class();
+    if ( method_exists( $obj, $method ) ) {
+        $obj->$method();
+        die();
+    }
+    die("$class::$method() does not exists.");
 }

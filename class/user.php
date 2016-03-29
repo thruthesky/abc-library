@@ -204,14 +204,39 @@ class user extends WP_User {
         if ( is_wp_error( $id ) ) wp_send_json( json_error( -10140, 'failed on registratoin' ) ); // $id ;
         else { // Registration is OK
             if ( in('login') == '1' ) { // Set user logged-in
-                $creds = array(
+                $credits = array(
                     'user_login'    => in('user_login'),
                     'user_password' => in('user_pass'),
-                    'rememember'    => true
+                    'rememberme'    => true
                 );
+                wp_signon( $credits, false );
             }
             wp_send_json( json_success( $id ) );
         }
+    }
+
+
+    public function loginSubmit() {
+        $credits = array(
+            'user_login'    => in('user_login'),
+            'user_password' => in('user_pass'),
+            'rememberme'    => in('rememberme')
+        );
+        $re = wp_signon( $credits, false );
+        if ( is_wp_error($re) ) {
+            $user = user( in('user_login') );
+            if ( $user->exists() ) $re = json_error( -40132, "Wrong password" );
+            else $re = json_error( -40131, "Wrong username" );
+            wp_send_json( $re );
+        }
+        else wp_send_json( json_success() );
+    }
+
+
+
+    public function passwordLostSubmit() {
+        include ABSPATH . '/wp-login.php';
+        retrieve_password();
     }
 
 
