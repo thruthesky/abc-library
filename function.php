@@ -136,6 +136,13 @@ function td() {
 }
 
 /**
+ * Echoes td()
+ */
+function tde() {
+    echo td();
+}
+
+/**
  * @note it ECHOes image directory uri including ending slash.
  */
 function id() {

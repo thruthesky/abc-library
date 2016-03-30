@@ -24,7 +24,6 @@ add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_style('font-awesome', plugins_url('css/font-awesome/css/font-awesome.min.css', __FILE__));
     wp_enqueue_style( 'dashicons' );
     wp_enqueue_script( 'wp-util' );
-    wp_enqueue_style('abc-button', plugins_url('css/abc-button.css', __FILE__) );
 });
 
 require "function.php";

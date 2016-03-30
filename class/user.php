@@ -175,17 +175,19 @@ class user extends WP_User {
      * Register a user with $_GET, $POST input.
      *
      * @todo UNIT-TEST
+     * @todo theme developer may use different registratoin form. Need to provide a way to adapt form variation.
      */
     public function registerSubmit() {
-
         if ( ! in('user_login') ) wp_send_json(json_error(-5, 'Input username') );
         if ( ! in('user_pass') ) wp_send_json(json_error(-6, 'Input password') );
+        if ( user( in('user_login') )->exists() ) wp_send_json(json_error(-10, 'Username already exists.'));
+
         if ( ! in('user_email') ) wp_send_json(json_error(-7, 'Input email') );
+        if ( user( in('user_email') )->exists() ) wp_send_json(json_error(-20, 'email already exists.'));
+
         if ( ! in('name') ) wp_send_json(json_error(-8, 'Input name') );
         if ( ! in('mobile') ) wp_send_json(json_error(-9, 'Input mobile number') );
 
-        if ( user( in('user_login') )->exists() ) wp_send_json(json_error(-10, 'Username already exists.'));
-        if ( user( in('user_email') )->exists() ) wp_send_json(json_error(-20, 'email already exists.'));
 
         $id = user()->create(
             array(
@@ -200,7 +202,6 @@ class user extends WP_User {
                 'kakao' => in('kakao'),
             )
         );
-
         if ( is_wp_error( $id ) ) wp_send_json( json_error( -10140, 'failed on registratoin' ) ); // $id ;
         else { // Registration is OK
             if ( in('login') == '1' ) { // Set user logged-in
@@ -213,6 +214,31 @@ class user extends WP_User {
             }
             wp_send_json( json_success( $id ) );
         }
+
+    }
+
+    public function updateSubmit() {
+        if ( ! user()->login() ) wp_send_json(json_error(-4077, 'Login first') );
+        if ( ! in('user_email') ) wp_send_json(json_error(-4078, 'Input email') );
+        // @note
+        $user = user( in('user_email') );
+        if ( $user->exists() ) {
+            if ( $user->ID != my()->ID ) {
+                wp_send_json(json_error(-4079, 'email already exists.'));
+            }
+        }
+        if ( ! in('name') ) wp_send_json(json_error(4070, 'Input name') );
+        if ( ! in('mobile') ) wp_send_json(json_error(-4071, 'Input mobile number') );
+
+        my()->user_email = in('user_email');
+        my()->name = in('name');
+        my()->mobile = in('mobile');
+        my()->landline = in('landline');
+        my()->address = in('address');
+        my()->skype = in('skype');
+        my()->kakao = in('kakao');
+
+        wp_send_json( json_success() );
     }
 
 
@@ -254,5 +280,22 @@ class user extends WP_User {
 function user( $uid = null ) {
     $user = new user($uid);
     return $user;
+}
+
+/**
+ * @param null $uid
+ * @return user
+ * @code
+ *
+$user = user( in('user_email') );
+if ( $user->exists() ) {
+if ( $user->ID != my()->ID ) {
+wp_send_json(json_error(-20, 'email already exists.'));
+}
+}
+ * @endcode
+ */
+function my( $uid = null ) {
+    return user( $uid );
 }
 
