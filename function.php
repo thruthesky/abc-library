@@ -38,8 +38,9 @@ function segments($n = NULL) {
     $u = str_replace("https://", '', $u);
     $r = strtolower($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     $uri = str_replace( "$u/", '', $r);
-    list ( $first, $second ) = explode('?', $uri);
-    $re = explode('/', $first);
+    //list ( $first, $second ) = explode('?', $uri);
+    $arr = explode('?', $uri);
+    $re = explode('/', $arr[0]);
     if ( $n !== NULL ) return $re[$n];
     else return $re;
 }
