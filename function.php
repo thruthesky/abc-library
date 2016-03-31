@@ -38,7 +38,7 @@ function remove_admin_bar() {
 }
 
 function get_logout_url() {
-    is_home() ? $logout_url = get_bloginfo('home') : $logout_url = get_permalink();
+    is_home() ? $logout_url = home_url() : $logout_url = get_permalink();
     return wp_logout_url($logout_url);
 }
 
