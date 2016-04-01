@@ -8,6 +8,7 @@
 include_once ABSPATH . '/wp-includes/pluggable.php';
 include_once ABSPATH . '/wp-includes/user.php';
 include_once ABSPATH . '/wp-admin/includes/user.php';
+
 /**
  * Class WP_INCLUDE_USER
  */

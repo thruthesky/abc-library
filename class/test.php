@@ -8,6 +8,7 @@
 class test {
     public function all() {
         $this->user();
+        $this->abc();
     }
     public function user() {
 
@@ -93,5 +94,18 @@ class test {
         test( user()->currentUser()->ID == $user_o->ID, 'error if ID is not the same');
         test( user()->currentUser()->user_login == $user_o->user_login, 'error if user_login is not the same');
         $user_o->delete();
+    }
+
+    public function abc() {
+
+        test( ! abc()->route( 'this-route-does-not-exists'), 'Error if route exists' );
+
+
+        abc()->registerRoute('my-route');
+        test( abc()->route( 'my-route') );
+        abc()->registerRoute('test-route');
+        test( abc()->route( 'test-route') );
+
+
     }
 }

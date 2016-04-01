@@ -203,6 +203,7 @@ if ( ! function_exists( 'dog' ) ) {
  */
 $GLOBALS['abc_routes'] = array();
 /**
+ * @deprecated use abc()->registerRoute( 'route' );
  * @param array $array
  */
 function abc_register_route( array $array ) {
@@ -219,6 +220,11 @@ function abc_register_route( array $array ) {
     });
 }
 
+/**
+ * @deprecated use abc()->route()
+ * @param $route
+ * @return bool
+ */
 function abc_registered_route( $route ) {
     global $abc_routes;
     return in_array( $route, $abc_routes );
