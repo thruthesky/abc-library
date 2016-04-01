@@ -38,10 +38,16 @@ function segments($n = NULL) {
     $u = str_replace("https://", '', $u);
     $r = strtolower($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     $uri = str_replace( "$u/", '', $r);
+<<<<<<< HEAD
     $arr = explode('?', $uri);
 	if ( $arr ) {
 	    $re = explode('/', $arr[0]);
 	}
+=======
+    //list ( $first, $second ) = explode('?', $uri);
+    $arr = explode('?', $uri);
+    $re = explode('/', $arr[0]);
+>>>>>>> 8f21433d1ea5f8ce32a0cbb5093c215d231e4b25
     if ( $n !== NULL ) return $re[$n];
     else return $re;
 }
@@ -75,7 +81,7 @@ function remove_admin_bar( $admin = false ) {
 }
 
 function get_logout_url() {
-    is_home() ? $logout_url = get_bloginfo('home') : $logout_url = get_permalink();
+    is_home() ? $logout_url = home_url() : $logout_url = get_permalink();
     return wp_logout_url($logout_url);
 }
 
@@ -138,6 +144,13 @@ function td() {
 }
 
 /**
+ * Echoes td()
+ */
+function tde() {
+    echo td();
+}
+
+/**
  * @note it ECHOes image directory uri including ending slash.
  */
 function id() {
@@ -153,20 +166,23 @@ function hd() {
 
 
 
+if ( ! function_exists( 'dog' ) ) {
 
-function dog( $message ) {
-    static $count_dog = 0;
-    $count_dog ++;
-    if( WP_DEBUG === true ){
-        if( is_array( $message ) || is_object( $message ) ){
-            $message = print_r( $message, true );
-        }
-        else {
+    function dog( $message ) {
+        static $count_dog = 0;
+        $count_dog ++;
+        if( WP_DEBUG === true ){
+            if( is_array( $message ) || is_object( $message ) ){
+                $message = print_r( $message, true );
+            }
+            else {
 
+            }
         }
+        $message = "[$count_dog] $message";
+        error_log( $message );
     }
-    $message = "[$count_dog] $message";
-    error_log( $message );
+
 }
 
 
@@ -194,6 +210,7 @@ function dog( $message ) {
  */
 $GLOBALS['abc_routes'] = array();
 /**
+ * @deprecated use abc()->registerRoute( 'route' );
  * @param array $array
  */
 function abc_register_route( array $array ) {
@@ -210,6 +227,11 @@ function abc_register_route( array $array ) {
     });
 }
 
+/**
+ * @deprecated use abc()->route()
+ * @param $route
+ * @return bool
+ */
 function abc_registered_route( $route ) {
     global $abc_routes;
     return in_array( $route, $abc_routes );
@@ -240,6 +262,12 @@ function json_success( $data = array() ) {
     );
 }
 
+function get_error_message( $error ) {
+    if ( ! is_wp_error($error) ) return;
+
+    list ( $k, $v ) = each ($error->errors);
+    return "$k : $v[0]";
+}
 
 function loadRoute( $class, $method ) {
     $obj = new $class();
