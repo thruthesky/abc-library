@@ -15,7 +15,6 @@
  */
 
 define('ABC_LIBRARY', TRUE);
-
 /**
  *
  * ABC Library loads font-awesome, dashcons, wp-utils by default.
@@ -32,7 +31,10 @@ require "class/test.php";
 require "shortcode.php";
 require "hook.php";
 
-dog('abc-library loaded --- ' . date('r'));
+dog('abc-library' . date('r'));
+
+
+
 
 
 /**
@@ -45,3 +47,4 @@ dog('abc-library loaded --- ' . date('r'));
 if ( segment(0) == 'abc' ) loadRoute( segment(1), segment(2) );
 if ( segment(0) == 'user' ) loadRoute( segment(0), segment(1) );
 if ( segment(0) == 'test' ) loadRoute( segment(0), segment(1) );
+

@@ -159,20 +159,23 @@ function hd() {
 
 
 
+if ( ! function_exists( 'dog' ) ) {
 
-function dog( $message ) {
-    static $count_dog = 0;
-    $count_dog ++;
-    if( WP_DEBUG === true ){
-        if( is_array( $message ) || is_object( $message ) ){
-            $message = print_r( $message, true );
-        }
-        else {
+    function dog( $message ) {
+        static $count_dog = 0;
+        $count_dog ++;
+        if( WP_DEBUG === true ){
+            if( is_array( $message ) || is_object( $message ) ){
+                $message = print_r( $message, true );
+            }
+            else {
 
+            }
         }
+        $message = "[$count_dog] $message";
+        error_log( $message );
     }
-    $message = "[$count_dog] $message";
-    error_log( $message );
+
 }
 
 
@@ -246,6 +249,12 @@ function json_success( $data = array() ) {
     );
 }
 
+function get_error_message( $error ) {
+    if ( ! is_wp_error($error) ) return;
+
+    list ( $k, $v ) = each ($error->errors);
+    return "$k : $v[0]";
+}
 
 function loadRoute( $class, $method ) {
     $obj = new $class();
