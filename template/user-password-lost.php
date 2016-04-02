@@ -9,6 +9,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     }
     else {
         _e('Password reset link has been sent to your email. Please check your email.');
+        return;
     }
 }
 ?>
@@ -17,7 +18,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 <section class="lost-password">
     <form action="<?php echo home_url('/user-password-lost')?>" method="POST">
-        <input type="hidden" name="redirect_to" value="<?php echo home_url('/log-in?action=lostpassword')?>">
         <div class="line">
             <label class="caption" for="user_login">User ID or Email</label>
             <div class="text"><input type="text" name="user_login" maxlength="64" id="user_login" tabindex="100"></div>

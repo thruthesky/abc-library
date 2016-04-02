@@ -39,6 +39,7 @@ abc()->registerRoute(
         'user-register',
         'user-update',
         'user-password-lost',
+        'user-password-reset',
     ]
 );
 

@@ -7,6 +7,7 @@
  */
 class test {
     public function all() {
+        $this->in();
         $this->user();
         $this->abc();
     }
@@ -107,5 +108,12 @@ class test {
         test( abc()->route( 'test-route') );
 
 
+    }
+    public function in() {
+        test( in('this-is-no-prameta') === null, 'Error if it is not null');
+        $_GET['param100'] = '100';
+        test( in('param100') == '100', 'Error if it is not 100');
+        test( in('param100') == 100, 'Error if it is not 100');
+        test( in('param100') != 200, 'Error if it is not 200');
     }
 }

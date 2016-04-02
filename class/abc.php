@@ -15,12 +15,25 @@ class abc {
         });
     }
 
+    /**
+     * @deprecated use abc()->getRoutes()
+     * @return array
+     */
     public function routes()
     {
         return self::$routes;
     }
 
     /**
+     * Returns routes.
+     * @return array
+     */
+    public function getRoutes() {
+        return self::$routes;
+    }
+
+    /**
+     * Check if the input $route is registered ( or exists in self::$routes )
      * @return bool
      */
     public function route( $route = null ) {
@@ -28,22 +41,47 @@ class abc {
         return in_array( $route, self::$routes );
     }
 
+    /**
+     * Registers routes.
+     * @param $route
+     */
     public function registerRoute( $route ) {
         if ( is_array( $route ) ) self::$routes += $route;
         else self::$routes[] = $route;
     }
 
+
     /**
      *
      * Renders the contents of the given template to a string and returns it.
      *
-     * @param string $template_name The name of the template to render (without .php)
-     * @param array  $attributes    The PHP variables for the template
+     * It requires the template file with WordPress environment.
      *
-     * @return string               The contents of the template.
+     * The globals are set up for the template file to ensure that the WordPress
+     * environment is available from within the function. The query variables are
+     * also available.
+     *
+     * @global array      $posts
+     * @global WP_Post    $post
+     * @global bool       $wp_did_header
+     * @global WP_Query   $wp_query
+     * @global WP_Rewrite $wp_rewrite
+     * @global wpdb       $wpdb
+     * @global string     $wp_version
+     * @global WP         $wp
+     * @global int        $id
+     * @global WP_Comment $comment
+     * @global int        $user_ID
+     *
+     * @param string $template_name     The name of the template to render (without .php)
+     * @param array  $attributes        The PHP variables for the template
+     *
+     * @return string                   The contents of the template.
      *
      */
     public function getTemplate($template_name = null, $attributes = null ) {
+        global $posts, $post, $wp_did_header, $wp_query, $wp_rewrite, $wpdb, $wp_version, $wp, $id, $comment, $user_ID;
+
 
         if ( empty( $template_name ) ) $template_name = segment(0);
         if ( ! $attributes ) {
@@ -75,11 +113,16 @@ class abc {
 
     /**
      *
-     * Load header
+     * Loads & Echoes header / footer
      *
-     * If "?theme=no" is input, it does not load header.
+     * These methods simply mimics the get_header() / get_footer() tags.
+     *
+     * But the only difference is that these methods does not load the header / footer tempates
+     *
+     *      If "?theme=no" is set in the HTTP INPUT
      *
      * @return null
+     *
      */
     public function header() {
         if ( in('theme') == 'no' ) return null;

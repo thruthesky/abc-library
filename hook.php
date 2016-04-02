@@ -7,6 +7,20 @@
  *
  */
 
+/**
+ * Password Reset Hook
+ * @warning Once you install this plugin, it will automatically hook and do its way.
+ *
+ */
+
+add_action('init', function() {
+    if ( in('action') == 'rp' && in('key') && in('login') ) {
+        $url = remove_query_arg( 'action' );
+        $url = str_replace("wp-login.php", 'user-password-reset', $url);
+        wp_redirect( $url );
+        die();
+    }
+});
 
 /**
  * Displays the markup(HTML) on the hook.
