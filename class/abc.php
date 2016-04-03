@@ -46,7 +46,7 @@ class abc {
      * @param $route
      */
     public function registerRoute( $route ) {
-        if ( is_array( $route ) ) self::$routes += $route;
+        if ( is_array( $route ) ) self::$routes = array_merge( self::$routes, $route );
         else self::$routes[] = $route;
     }
 
@@ -81,6 +81,8 @@ class abc {
      */
     public function getTemplate($template_name = null, $attributes = null ) {
         global $posts, $post, $wp_did_header, $wp_query, $wp_rewrite, $wpdb, $wp_version, $wp, $id, $comment, $user_ID;
+
+
 
 
         if ( empty( $template_name ) ) $template_name = segment(0);
