@@ -1,11 +1,12 @@
 # ABC Library
-Is a basic library for wordpress developped by Withcenter Dev Team.
+Is a basic helper library for WordPress developed by Withcenter Dev Team.
 
 # How to use
 
-1. Install abc-library.php
+1. Install or include abc-library
 
     1-1. Activate it.
+
 
 2. Install depending plugins or themes.
 
@@ -90,5 +91,13 @@ sample index.php
         }
     }
     abc()->footer();
+
+
+
+
+# User Registration / Login / Update / Password Reset
+
+ABC Library has its own routine for user registration, login, update, password reset.
+
 
 
