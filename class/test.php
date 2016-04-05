@@ -7,7 +7,9 @@
  */
 class test {
     public function all() {
+        $this->in();
         $this->user();
+        $this->abc();
     }
     public function user() {
 
@@ -93,5 +95,25 @@ class test {
         test( user()->currentUser()->ID == $user_o->ID, 'error if ID is not the same');
         test( user()->currentUser()->user_login == $user_o->user_login, 'error if user_login is not the same');
         $user_o->delete();
+    }
+
+    public function abc() {
+
+        test( ! abc()->route( 'this-route-does-not-exists'), 'Error if route exists' );
+
+
+        abc()->registerRoute('my-route');
+        test( abc()->route( 'my-route') );
+        abc()->registerRoute('test-route');
+        test( abc()->route( 'test-route') );
+
+
+    }
+    public function in() {
+        test( in('this-is-no-prameta') === null, 'Error if it is not null');
+        $_GET['param100'] = '100';
+        test( in('param100') == '100', 'Error if it is not 100');
+        test( in('param100') == 100, 'Error if it is not 100');
+        test( in('param100') != 200, 'Error if it is not 200');
     }
 }

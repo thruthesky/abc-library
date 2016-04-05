@@ -5,9 +5,13 @@
  *
  */
 /**
+ *
+ * @note By default it returns null if the key does not exist.
+ *
  * @param $name
  * @param null $default
  * @return null
+ *
  */
 function in( $name, $default = null ) {
     if ( isset( $_POST[$name] ) ) return $_POST[$name];
@@ -32,16 +36,24 @@ function test( $re, $message = null ) {
     }
 }
 
+/**
+ * @param null $n
+ * @return array|null
+ */
 function segments($n = NULL) {
     $u = strtolower(site_url());
     $u = str_replace("http://", '', $u);
     $u = str_replace("https://", '', $u);
     $r = strtolower($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     $uri = str_replace( "$u/", '', $r);
-    //list ( $first, $second ) = explode('?', $uri);
     $arr = explode('?', $uri);
-    $re = explode('/', $arr[0]);
-    if ( $n !== NULL ) return $re[$n];
+	if ( $arr ) {
+	    $re = explode('/', $arr[0]);
+	}
+    if ( $n !== NULL ) {
+        if ( isset($re[$n]) ) return $re[$n];
+        else return NULL;
+    }
     else return $re;
 }
 function segment($n) {
@@ -79,6 +91,12 @@ function get_logout_url() {
 }
 
 
+/**
+ * @deprecated use opt()
+ * @param $storage
+ * @param $name
+ * @param bool|true $escape
+ */
 function option($storage, $name, $escape = true) {
     $options = get_option($storage);
     if ( $escape ) $re = esc_attr( $options[$name] );
@@ -90,16 +108,23 @@ function option($storage, $name, $escape = true) {
  *
  * Returns option value
  *
- * @param $name             - is option name. It can be an element of array. like "abc[def]"
- * @param null $default     - is the default value which will be returned if the value of the option name is empty.
+ * @param $name - is option name. It can be an element of array. like "abc[def]"
+ * @param null $default - is the default value which will be returned if the value of the option name is empty.
+ * @param bool $escape
  * @return mixed|null|void
- *
  * @code
  *  echo opt('abc', 'def');
  *  echo opt('lms[logo]', 'img/logo.jpg');
  * @endcode
+ *
+ * @code
+ *      "option('lms', 'company_name')" can be converted into "opt('lms[company_name]')"
+ *      "get_option( 'lms' );" can be converted into "get_opt('lms')"
+ * @endcode
  */
-function get_opt($name, $default=null) {
+function get_opt($name, $default=null, $escape = true) {
+
+
     $value = null;
     if ( strpos( $name, '[' ) ) {
         list( $name, $rest ) = explode( '[', $name );
@@ -110,20 +135,26 @@ function get_opt($name, $default=null) {
     else {
         $value = get_option( $name );
     }
-    if ( empty($value) ) return $default;
-    else return $value;
+
+
+    if ( empty($value) ) $value = $default;
+
+    if ( $escape ) $value = esc_attr( $value );
+
+    return $value;
 }
 
 /**
  * Echoes the return value of 'get_opt'
  * @param $name
  * @param null $default
+ * @param bool $escape
  * @code
  * <?php opt('lms[logo]', 'img/logo.jpg')?>
  * @endcode
  */
-function opt($name, $default=null) {
-    echo get_opt($name, $default);
+function opt($name, $default=null, $escape = true) {
+    echo get_opt($name, $default, $escape);
 }
 
 
@@ -144,11 +175,21 @@ function tde() {
 }
 
 /**
+ * @deprecated use imge()
  * @note it ECHOes image directory uri including ending slash.
  */
 function id() {
     echo td() . '/img/';
 }
+function img() {
+    return td() . '/img/';
+}
+function img_e() {
+    echo img();
+}
+
+
+
 
 /**
  * Echoes home page directory uri including slash.
@@ -159,20 +200,23 @@ function hd() {
 
 
 
+if ( ! function_exists( 'dog' ) ) {
 
-function dog( $message ) {
-    static $count_dog = 0;
-    $count_dog ++;
-    if( WP_DEBUG === true ){
-        if( is_array( $message ) || is_object( $message ) ){
-            $message = print_r( $message, true );
-        }
-        else {
+    function dog( $message ) {
+        static $count_dog = 0;
+        $count_dog ++;
+        if( WP_DEBUG === true ){
+            if( is_array( $message ) || is_object( $message ) ){
+                $message = print_r( $message, true );
+            }
+            else {
 
+            }
         }
+        $message = "[$count_dog] $message";
+        error_log( $message );
     }
-    $message = "[$count_dog] $message";
-    error_log( $message );
+
 }
 
 
@@ -200,6 +244,7 @@ function dog( $message ) {
  */
 $GLOBALS['abc_routes'] = array();
 /**
+ * @deprecated use abc()->registerRoute( 'route' );
  * @param array $array
  */
 function abc_register_route( array $array ) {
@@ -216,6 +261,11 @@ function abc_register_route( array $array ) {
     });
 }
 
+/**
+ * @deprecated use abc()->route()
+ * @param $route
+ * @return bool
+ */
 function abc_registered_route( $route ) {
     global $abc_routes;
     return in_array( $route, $abc_routes );
@@ -246,6 +296,17 @@ function json_success( $data = array() ) {
     );
 }
 
+/**
+ * Returns error message from WP_Error.
+ * @param $error
+ * @return string|void
+ */
+function get_error_message( $error ) {
+    if ( ! is_wp_error($error) ) return;
+
+    list ( $k, $v ) = each ($error->errors);
+    return "$k : $v[0]";
+}
 
 function loadRoute( $class, $method ) {
     $obj = new $class();

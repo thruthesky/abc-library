@@ -8,6 +8,7 @@
 include_once ABSPATH . '/wp-includes/pluggable.php';
 include_once ABSPATH . '/wp-includes/user.php';
 include_once ABSPATH . '/wp-admin/includes/user.php';
+
 /**
  * Class WP_INCLUDE_USER
  */
@@ -178,6 +179,7 @@ class user extends WP_User {
      * @todo theme developer may use different registratoin form. Need to provide a way to adapt form variation.
      */
     public function registerSubmit() {
+        do_action('begin_registerSubmit');
         if ( ! in('user_login') ) wp_send_json(json_error(-5, 'Input username') );
         if ( ! in('user_pass') ) wp_send_json(json_error(-6, 'Input password') );
         if ( user( in('user_login') )->exists() ) wp_send_json(json_error(-10, 'Username already exists.'));
@@ -194,6 +196,7 @@ class user extends WP_User {
                 'user_login' => in('user_login'),
                 'user_pass' => in('user_pass'),
                 'user_email' => in('user_email'),
+                'nickname' => in('nickname'),
                 'name' => in('name'),
                 'mobile' => in('mobile'),
                 'landline' => in('landline'),
@@ -204,6 +207,11 @@ class user extends WP_User {
         );
         if ( is_wp_error( $id ) ) wp_send_json( json_error( -10140, 'failed on registratoin' ) ); // $id ;
         else { // Registration is OK
+
+
+
+            do_action('end_registerSubmit', $id);
+
             if ( in('login') == '1' ) { // Set user logged-in
                 $credits = array(
                     'user_login'    => in('user_login'),
@@ -218,6 +226,7 @@ class user extends WP_User {
     }
 
     public function updateSubmit() {
+        do_action('begin_updateSubmit');
         if ( ! user()->login() ) wp_send_json(json_error(-4077, 'Login first') );
         if ( ! in('user_email') ) wp_send_json(json_error(-4078, 'Input email') );
         // @note
@@ -231,12 +240,15 @@ class user extends WP_User {
         if ( ! in('mobile') ) wp_send_json(json_error(-4071, 'Input mobile number') );
 
         my()->user_email = in('user_email');
+        my()->nickname = in('nickname');
         my()->name = in('name');
         my()->mobile = in('mobile');
         my()->landline = in('landline');
         my()->address = in('address');
         my()->skype = in('skype');
         my()->kakao = in('kakao');
+
+        do_action( 'end_updateSubmit', my()->ID );
 
         wp_send_json( json_success() );
     }
