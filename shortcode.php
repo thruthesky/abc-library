@@ -20,19 +20,17 @@ return "로그인 하기<br>" . do_shortcode("[wordpress_social_login]");
 
 add_shortcode( 'wp_log_in', function($attr, $content=null) {
     if ( empty( $content ) ) return "Input login content.";
-    $username = user()->getUsername();
-    if ( $username ) return $content;
+    if ( user()->login() ) return $content;
     else return '';
 });
 add_shortcode( 'wp_log_out', function($attr, $content=null) {
     if ( empty( $content ) ) return "Input logout content.";
-    $username = user()->getUsername();
-    if ( $username ) return '';
+    if ( user()->login() ) return '';
     else return $content;
 });
 add_shortcode( 'wp_log_info', function() {
-    $username = user()->getUsername();
-    if ( $username ) {
+    if ( user()->login() ) {
+	$username = user()->user_login;
         $url = get_logout_url();
         return <<<EOH
         <strong>$username</strong> 님 환영합니다.<br>
