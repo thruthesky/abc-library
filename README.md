@@ -101,3 +101,12 @@ ABC Library has its own routine for user registration, login, update, password r
 
 
 
+# shortcode
+
+예제)
+
+    [wp_log_in]로그인 정보[/wp_log_in]
+    [wp_log_out]로그인하기[/wp_log_out]
+    <br>
+    [wp_log_info]
+
