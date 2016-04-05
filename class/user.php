@@ -210,7 +210,7 @@ class user extends WP_User {
 
 
 
-            do_action('after_registerSubmit', $id);
+            do_action('end_registerSubmit', $id);
 
             if ( in('login') == '1' ) { // Set user logged-in
                 $credits = array(
@@ -226,6 +226,7 @@ class user extends WP_User {
     }
 
     public function updateSubmit() {
+        do_action('begin_updateSubmit');
         if ( ! user()->login() ) wp_send_json(json_error(-4077, 'Login first') );
         if ( ! in('user_email') ) wp_send_json(json_error(-4078, 'Input email') );
         // @note
@@ -247,7 +248,7 @@ class user extends WP_User {
         my()->skype = in('skype');
         my()->kakao = in('kakao');
 
-        do_action('updateSubmit');
+        do_action( 'end_updateSubmit', my()->ID );
 
         wp_send_json( json_success() );
     }
