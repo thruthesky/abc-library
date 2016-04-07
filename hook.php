@@ -39,11 +39,3 @@ function display_option_on( $action, $option, $element = null ) {
         echo $markup;
     });
 }
-add_filter( 'the_content', function( $content ) {
-    $str = "Length of Content: " . strlen($content);
-    $content = "$str $content";
-    return $content;
-});
-add_action( 'get_header', function() {
-
-} );
