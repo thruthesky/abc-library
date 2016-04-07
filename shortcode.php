@@ -38,6 +38,12 @@ add_shortcode( 'wp_log_info', function() {
 EOH;
     }
     else {
-        return do_shortcode("[wordpress_social_login]");
+        $re = null;
+        include_once ABSPATH . '/wp-admin/includes/plugin.php';
+        if ( is_plugin_active('wordpress-social-login/wp-social-login.php') ) $re .= do_shortcode("[wordpress_social_login]");
+        ob_start();
+        include 'template/user-log-in.php';
+        $re .= ob_get_clean();
+        return $re;
     }
 });

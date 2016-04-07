@@ -49,7 +49,7 @@
                     $error.show();
                 }
                 else {
-                    location.href = home_url;
+                    location.href = '<?php echo home_url()?>';
                 }
             }, 500);
         }
@@ -57,7 +57,7 @@
     });
 </script>
 
-<h2>Register - Plugin Template</h2>
+
 <section class="register">
     <form action="<?php echo home_url('/user/registerSubmit')?>" method="POST">
         <?php wp_nonce_field('register'); ?>

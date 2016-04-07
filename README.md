@@ -49,7 +49,9 @@ These methods are more on test purpose.
 
 it simply calls get_header(), get_footer().
 
-But if "?theme=no" is set, then it does not calls get_header(), get_footer().
+
+    The only difference is that if "?theme=no" is set, then it does not calls get_header(), get_footer().
+
 
 Use these instead of get_header() and get_footer() when you do not need 'header' and 'footer' parts.
 
@@ -91,6 +93,21 @@ sample index.php
         }
     }
     abc()->footer();
+
+
+# How to apply abc()->route() and abc()->getTemplate() on other themes. 
+
+Some times you will need to use this code to use the register, update, password reset. 
+
+Put the code below inside any theme.
+
+
+    <?php if ( have_posts() ) : ?>
+        // ... code if there is post
+    <?php elseif ( abc()->route() ) : ?>
+        // ... Below will be run if /user-register, /user-password-lost accessed.
+        <?php echo abc()->getTemplate(); ?>
+    <?php endif; ?>
 
 
 

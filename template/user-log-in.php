@@ -17,6 +17,11 @@
  *
  */
 ?>
+<style>
+    .remember-me .text {
+        float:left;
+    }
+</style>
 <script>
     jQuery( function( $ ) {
         var $log_in_form = $('section.log-in form');
@@ -50,14 +55,13 @@
                     $error.show();
                 }
                 else {
-                    location.href = home_url;
+                    location.href = '<?php echo home_url()?>';
                 }
             }, 500);
         }
 
     });
 </script>
-<h2>Plugin Page/Login</h2>
 <?php if ( in('action') == 'lostpassword' ) { ?>
     <?php _e('Password reset link has been sent to your email.') ?>
 <?php } ?>
@@ -76,9 +80,9 @@
             <div class="text"><input type="password" name="user_pass" maxlength="64" id="user_pass" tabindex="101"></div>
         </fieldset>
 
-        <fieldset class="form-group">
+        <fieldset class="form-group remember-me">
             <div class="text"><input type="checkbox" name="rememberme" id="rememberme" tabindex="101"></div>
-            <label class="caption" for="rememberme">Keep me logged in</label>
+            <label class="caption" for="rememberme">Keep me logged-in</label>
         </fieldset>
 
 
