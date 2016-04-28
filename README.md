@@ -1,5 +1,8 @@
 # ABC Library
 Is a basic helper library for WordPress developed by Withcenter Dev Team.
+Abc library can be used for other themes and plugins.
+
+
 
 # How to use
 
@@ -43,7 +46,24 @@ You can override the templates by creating a template with same file name
 
 # theme
 
+
+## header 와 footer 의 출력 옵션
+
+    if ( ! isset($_REQUEST['_no_theme']) ) get_header();
+
+    if ( ! isset($_REQUEST['_no_theme']) ) get_footer();
+
+와 같이 해서 "?_no_theme=1" 와 같이 입력되면, 헤더, 푸터를 출력하지 않는다.
+
+이것은 sidebar 에도 적용을 할 수 있다.
+
+unittest 와 같은 경우는 이와 같이 사용 할 수 있다.
+
+
+
 ## abc()->header(), abc()->footer()
+
+    @deprecated Do not use this methods. Hard code in the theme instead.
 
 These methods are more on test purpose.
 

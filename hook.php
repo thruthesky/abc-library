@@ -22,16 +22,6 @@ add_action('init', function() {
     }
 });
 
-add_action('wp_footer', function(){
-    $domain = get_opt('lms[domain]');
-    if ( empty($domain) ) {
-        echo "
-    <script>
-    alert('Error: No domain in LMS Settings.');
-    </script>
-    ";
-    }
-});
 
 /**
  * Displays the markup(HTML) on the hook.
