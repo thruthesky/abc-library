@@ -115,6 +115,8 @@ class abc {
 
     /**
      *
+     * @deprecated hard code in the theme instead.
+     *
      * Loads & Echoes header / footer
      *
      * These methods simply mimics the get_header() / get_footer() tags.
@@ -126,13 +128,19 @@ class abc {
      * @return null
      *
      */
-    public function header() {
+    public function header( $name = null ) {
         if ( in('theme') == 'no' ) return null;
-        get_header();
+        get_header( $name );
     }
-    public function footer() {
+
+    /**
+     *
+     * @deprecated hard code in the theme instead.
+     *
+     */
+    public function footer( $name = null ) {
         if ( in('theme') == 'no' ) return null;
-        get_footer();
+        get_footer( $name );
     }
 }
 
