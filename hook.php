@@ -23,6 +23,9 @@ add_action('init', function() {
 });
 
 add_action('wp_footer', function(){
+    /**
+     *
+     * @todo this code must be moved into lms
     $domain = get_opt('lms[domain]');
     if ( empty($domain) ) {
         echo "
@@ -31,6 +34,7 @@ add_action('wp_footer', function(){
     </script>
     ";
     }
+    */
 });
 
 /**

@@ -77,9 +77,23 @@ class user extends WP_User {
         return is_user_logged_in();
     }
 
+
+    /**
+     * @param $field
+     * @return bool|mixed
+     */
+    public function field($field) {
+        if ( ! $this->login() ) return false;
+        return $this->currentUser()->$field;
+    }
+
+    /**
+     * Returns true if the user can manage options.
+     * @return bool
+     */
     public function admin()
     {
-        return user_can( $this->user, 'manage_options' );
+        return user_can( $this->ID, 'manage_options' );
     }
 
     /**
@@ -311,3 +325,13 @@ function my( $uid = null ) {
     return user( $uid );
 }
 
+/**
+ * @param $attr
+ * @return bool|mixed
+ *
+ *  - false if the user is not logged.
+ *  - if the user logged in, WP_User()->__get($field) will be returned.
+ */
+function login( $attr ) {
+    return my()->field($attr);
+}
