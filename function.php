@@ -4,26 +4,34 @@
  * @package abc-library
  *
  */
-/**
- *
- * @note By default it returns null if the key does not exist.
- *
- * @param $name
- * @param null $default
- * @return null
- *
- */
-function in( $name, $default = null ) {
-    if ( isset( $_POST[$name] ) ) return $_POST[$name];
-    else if ( isset( $_GET[$name] ) ) return $_GET[$name];
-    else return $default;
+
+
+if ( ! function_exists('in') ) {
+    /**
+     *
+     * @note By default it returns null if the key does not exist.
+     *
+     * @param $name
+     * @param null $default
+     * @return null
+     *
+     */
+    function in( $name, $default = null ) {
+        if ( isset( $_POST[$name] ) ) return $_POST[$name];
+        else if ( isset( $_GET[$name] ) ) return $_GET[$name];
+        else return $default;
+    }
 }
 
-function di($o) {
-    $re = print_r($o, true);
-    $re = str_replace(" ", "&nbsp;", $re);
-    $re = explode("\n", $re);
-    echo implode("<br>", $re);
+
+
+if ( ! function_exists( 'di' ) ) {
+    function di($o) {
+        $re = print_r($o, true);
+        $re = str_replace(" ", "&nbsp;", $re);
+        $re = explode("\n", $re);
+        echo implode("<br>", $re);
+    }
 }
 
 function test( $re, $message = null ) {
