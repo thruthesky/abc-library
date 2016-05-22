@@ -59,7 +59,7 @@ abc()->registerRoute(
  */
 add_action('wp_loaded', function(){
     global $abc_classes;
-    dog('abc-library: wp_loaded');
+    //dog('abc-library: wp_loaded');
     if ( in_array( segment(0), $abc_classes) ) loadRoute( segment(0), segment(1) );
 });
 
