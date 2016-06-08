@@ -59,7 +59,7 @@ abc()->registerRoute(
  */
 add_action('wp_loaded', function(){
     global $abc_classes;
-    dog('abc-library: wp_loaded');
+    //dog('abc-library: wp_loaded');
     if ( in_array( segment(0), $abc_classes) ) loadRoute( segment(0), segment(1) );
 });
 
@@ -70,6 +70,7 @@ add_action('wp_loaded', function(){
  */
 add_action( 'wp_enqueue_scripts', function() {
     dog('abc-library: wp_enqueue_scripts');
+
     //wp_enqueue_style('font-awesome', plugins_url('css/font-awesome/css/font-awesome.min.css', __FILE__));
     wp_enqueue_style( 'dashicons' );
     wp_enqueue_script( 'wp-util' );
