@@ -327,3 +327,19 @@ function loadRoute( $class, $method ) {
     }
     die("$class::$method() does not exists.");
 }
+
+/**
+ * Alerts the message in Javascript
+ * @param $msg
+ * @return null
+ */
+function jsAlert($msg) {
+    echo <<<EOS
+    <script>
+    setTimeout(function(){
+        alert("$msg");
+    }, 200);
+    </script>
+EOS;
+    return null;
+}
