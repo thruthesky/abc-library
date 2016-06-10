@@ -66,11 +66,12 @@ add_action('wp_loaded', function(){
 
 /**
  *
- * ABC Library loads font-awesome, dashcons, wp-utils by default.
+ * ABC Library loads dashcons, wp-utils by default.
  */
 add_action( 'wp_enqueue_scripts', function() {
     dog('abc-library: wp_enqueue_scripts');
-    // wp_enqueue_style('font-awesome', plugins_url('css/font-awesome/css/font-awesome.min.css', __FILE__));
+
+    //wp_enqueue_style('font-awesome', plugins_url('css/font-awesome/css/font-awesome.min.css', __FILE__));
     wp_enqueue_style( 'dashicons' );
     wp_enqueue_script( 'wp-util' );
 });
