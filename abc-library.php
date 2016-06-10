@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: ABC Library By Withcenter Dev Team
- * Plugin URI: http://it.phlgo.com
+ * Plugin URI: http://it.philgo.com
  * Author: JaeHo Song
  * Description: This is ABC Library For WordPress. See Readme.MD file for more information.
  * Version: 0.0.4

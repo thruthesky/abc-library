@@ -203,11 +203,15 @@ function img_e() {
 
 
 /**
+ * @deprecated just use esc_url(home_url())
+ *
  * Echoes home page directory uri including slash.
+ *
  */
 function hd() {
     echo esc_url( home_url( '/' ) );
 }
+
 
 
 
