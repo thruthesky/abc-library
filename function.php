@@ -44,10 +44,15 @@ function test( $re, $message = null ) {
     }
 }
 
+/**
+ * @note 2016-06-11 Adding default value.
+ * @todo remove segments() in other libraries.
+ */
 if ( ! function_exists('segments') ) {
     /**
      * @param null $n
      * @return array|null
+     *      if $n is null, then it returns whole segments in an array.
      */
     function segments($n = NULL) {
         $u = strtolower(site_url());
@@ -66,8 +71,11 @@ if ( ! function_exists('segments') ) {
         }
         else return $re;
     }
-    function segment($n) {
+    function segment( $n = 0 ) {
         return segments($n);
+    }
+    function seg($n = 0 ) {
+        return segment($n);
     }
 }
 
