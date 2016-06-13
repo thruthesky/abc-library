@@ -74,9 +74,14 @@ if ( ! function_exists('segments') ) {
     function segment( $n = 0 ) {
         return segments($n);
     }
+
+}
+if ( ! function_exists('seg') ) {
+
     function seg($n = 0 ) {
         return segment($n);
     }
+
 }
 
 
