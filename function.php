@@ -360,3 +360,38 @@ function jsAlert($msg) {
 EOS;
     return null;
 }
+
+
+/**
+ *
+ * Returns domain with/without "www." & "TLDs"
+ *
+ * @param bool|true $host_without_TLD
+ * @param null $domain
+ * @return mixed|null|string
+ * @code
+
+echo '<br>' . get_domain_name(true, 'www.philgo.com');               // philgo
+echo '<br>' . get_domain_name(false, 'www.philgo.com');              // www.philgo.com
+echo '<br>' . get_domain_name(true, 'tv.philgo.co.kr');              // tv.philgo
+echo '<br>' . get_domain_name(false, 'tv.philgo.co.kr');             // tv.philgo.co.kr
+echo '<br>' . get_domain_name(true, 'tv.philgo.net');                // tv.philgo
+echo '<br>' . get_domain_name(true, 'abc.def.philgo.org');           // abc.def.philgo
+echo '<br>' . get_domain_name(true, 'www.def.philgo.kr');            // def.philgo
+echo '<br>' . get_domain_name(true, 'www.philgo.net');               // philgo
+
+ *
+ * @endcode
+ */
+function get_domain_name( $host_without_TLD = true, $domain = null ) {
+    $arr = [ 'co.kr', 'kr', 'com', 'net', 'org' ];
+    if ( empty($domain) ) $domain = $_SERVER['HTTP_HOST'];
+    $domain = strtolower( $domain );
+    if ( $host_without_TLD ) {
+        $domain = str_replace('www.', '', $domain);
+        foreach( $arr as $needle ) {
+            if ( strpos( $domain, '.'.$needle) ) return str_replace( '.' . $needle, '', $domain );
+        }
+    }
+    return $domain;
+}
