@@ -395,3 +395,14 @@ function get_domain_name( $host_without_TLD = true, $domain = null ) {
     }
     return $domain;
 }
+
+
+/**
+ * @param $path
+ * @return array
+ * https://github.com/mustangostang/spyc
+ */
+function yaml_load_file( $path ) {
+    require_once ABC_PATH . "etc/spyc.php";
+    return spyc_load_file( $path );
+}
